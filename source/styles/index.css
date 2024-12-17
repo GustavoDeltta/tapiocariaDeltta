@@ -1,0 +1,272 @@
+@import url('https://fonts.googleapis.com/css2?family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap');
+
+*{
+    font-family: "Sour Gummy", sans-serif;
+    color: white;
+}
+body{
+    display: flex;
+    flex-direction: column;
+    margin: 0%;
+    background-color: #9fc6ff;
+}
+header{
+    display: flex;
+    flex-direction: row;
+}
+.logo{
+    background-color: red;
+    width: 100vw;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 5px 5px 15px 5px rgba(0, 0, 0, 0.432);
+    z-index: 2;
+}
+h1 {
+    font-size: 60px;
+}
+.tabs{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    height: 60px;
+    gap: 10px;
+    background-color: rgb(190, 0, 0);
+    width: 100vw;
+    border-radius: 0 0 20px 0;
+}
+.cpf{
+    display: flex;
+    flex-direction: row;
+}
+#cpf{
+    width: 200px;
+    background-color: rgba(255, 255, 255, 0.603);
+    color: black;
+    font-size: 20px;
+    padding-left: 10px;
+}
+#cpf::placeholder{
+    color: black;
+    font-size: 20px;
+    padding-left: 10px;
+}
+#tapioca-tab{
+    height: 110%;
+    width: 260px;
+    align-self: flex-start;
+    color: black;
+    background-color: rgb(255, 196, 0);
+    border: none;
+    border-radius: 0 0 15px 15px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    font-size: 30px;
+}
+#tapioca-tab:hover{
+    box-shadow: 5px 5px 15px 5px rgba(0, 0, 0, 0.432);
+    font-size: 40px;
+}
+#cuscuz-tab{
+    height: 110%;
+    width: 260px;
+    align-self: flex-start;
+    color: black;
+    background-color: rgb(255, 196, 0);
+    border: none;
+    border-radius: 0 0 15px 15px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    font-size: 30px;
+}
+#cuscuz-tab:hover{
+    box-shadow: 5px 5px 15px 5px rgba(0, 0, 0, 0.432);
+    font-size: 40px;
+}
+#sanduiche-tab{
+    height: 110%;
+    width: 260px;
+    align-self: flex-start;
+    color: black;
+    background-color: rgb(255, 196, 0);
+    border: none;
+    border-radius: 0 0 15px 15px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    font-size: 30px;
+}
+#sanduiche-tab:hover{
+    box-shadow: 5px 5px 15px 5px rgba(0, 0, 0, 0.432);
+    font-size: 40px;
+}
+label{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    font-size: 25px;
+    color: white;
+}
+#cpf{
+    display: flex;
+    height: 40px;
+    border: none;
+    border-radius: 10px;
+}
+main{
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    margin: 15px;
+    gap: 15px;
+}
+h3{
+    font-size: 30px;
+    color: black;
+}
+.recheio{
+    background-color: #f8e8002a;
+    height: 79.5vh;
+    border: 1px solid black;
+    border-radius: 20px;
+    display: flex;
+    width: 70%;
+    flex-direction: column;
+    align-items: center;
+}
+.recheios-grid{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: start;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 15px;
+    flex-grow: 0 ;
+    background-color: rgba(128, 128, 128, 0.185);
+    height: 80%;
+    width: 90%;
+    border-radius: 20px;
+}
+.recheio-item{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(255, 196, 0);
+    color: black;
+    font-size: 25px;
+    height: 100px;
+    width: 250px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+    overflow-y: auto;
+}
+.recheio-item:hover{
+    background-color: red;
+    color: white;
+}
+.checkout{
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f8e8002a;
+    border: 1px solid black;
+    height: 79.5vh;
+    width: 30%;
+    border-radius: 20px;
+}
+.checkout-itens{
+    background-color: rgba(128, 128, 128, 0.185);
+    width: 90%;
+    height: 500px;
+    border-radius: 15px;
+    font-size: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+.total-price{
+    align-self: flex-end;
+    margin-right: 20px;
+}
+.total-price p, span{
+    color: black;
+    font-size: 40px;
+    margin: 0;
+    margin-top: 15px;
+}
+.buttons{
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+}
+#clear-btn{
+    height: 90px;
+    margin: 15px;
+    margin-right: 7.5px;
+    border-radius: 15px;
+    border: none;
+    font-size: 40px;
+    color: black;
+    font-weight: 800;
+    align-self: flex-end;
+    background-color: rgba(255, 0, 0, 0.582);
+    cursor: pointer;
+}
+#payment-btn{
+    height: 90px;
+    margin: 15px;
+    margin-left: 7.5px;
+    border-radius: 15px;
+    width: 90%;
+    border: none;
+    font-size: 40px;
+    color: black;
+    font-weight: 800;
+    background-color: rgb(36, 197, 36);
+    align-self: flex-end;
+    cursor: pointer;
+}
+.modal {
+    display: none; /* Ocultar o modal por padrão */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5); /* Fundo escuro semi-transparente */
+}
+
+/* Conteúdo do modal */
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    width: 40%;
+    border-radius: 5px;
+    text-align: center;
+}
+.modal-content h2, p{
+    color: black;
+}
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.close:hover,
+.close:focus {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    cursor: pointer;
+}
