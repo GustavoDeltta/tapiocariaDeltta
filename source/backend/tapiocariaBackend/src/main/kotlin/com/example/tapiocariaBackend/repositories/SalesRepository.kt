@@ -1,5 +1,6 @@
 package com.example.tapiocariaBackend.repositories
 
+import com.example.tapiocariaBackend.dto.SaleResponse
 import jakarta.persistence.*
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
@@ -11,7 +12,11 @@ data class Sales(
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id val id: Int?,
-    val idFood: Int,
+
+    @ManyToOne
+    @JoinColumn(name = "id_food", referencedColumnName = "id")
+    val food: Foods, // Relação com a tabela foods
+
     val cpf: String,
     val saleDate: String,
     val description: String,
@@ -19,6 +24,11 @@ data class Sales(
 )
 
 interface SalesRepository: JpaRepository<Sales, Int> {
-    @Query("select * from sales where cpf = :cpf", nativeQuery = true)
-    fun getAllSalesByCpfClient(@Param("cpf")cpf: String): List<Sales>
+    @Query("""
+    SELECT new com.example.tapiocariaBackend.dto.SaleResponse(f.name, s.price, s.saleDate, s.description)
+    FROM Sales s
+    JOIN s.food f
+    WHERE s.cpf = :cpf
+""")
+    fun getAllSalesByCpfClient(@Param("cpf") cpf: String): List<SaleResponse>
 }

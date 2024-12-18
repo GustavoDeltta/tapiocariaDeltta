@@ -1,6 +1,7 @@
 const baseUrl = 'http://localhost:8080';
 let basePrice = 0;
 let cartItems = [];
+let foodName = "";
 
 document.getElementById('tapioca-tab').addEventListener('click', () => fetchFillings(1));
 document.getElementById('cuscuz-tab').addEventListener('click', () => fetchFillings(2));
@@ -15,7 +16,10 @@ async function fetchFillings(foodId) {
         const data = await response.json();
 
         basePrice = data.basePrice;
+        foodName = data.name;
         foodID = foodId;
+
+        console.log(foodName);
 
         cartItems = [];
         document.querySelector(".checkout-itens").innerHTML = "";
@@ -132,52 +136,66 @@ openModalBtn.onclick = async function () {
         return;
     }
 
-    cpf.toString();
-
     modal.style.display = "block";
 
-    const response = await fetch(`${baseUrl}/history?cpf=${cpf}`);
-    const data = await response.json();
+    try {
+        // Busca os dados do histórico no backend
+        const response = await fetch(`${baseUrl}/history?cpf=${cpf}`);
+        if (!response.ok) {
+            throw new Error("Erro ao buscar o histórico de compras.");
+        }
 
-    console.log(data); 
-    
-    // Garantir que o elemento history-sales exista
-    const history = document.getElementById("history-sales");
-    if (!history) {
-        alert("Erro: O elemento 'history-sales' não foi encontrado.");
-        return;
+        const data = await response.json();
+        console.log(data); // Verificar a estrutura dos dados retornados
+
+        // Garantir que o elemento history-sales exista
+        const history = document.getElementById("history-sales");
+        if (!history) {
+            alert("Erro: O elemento 'history-sales' não foi encontrado.");
+            return;
+        }
+
+        // Limpar o histórico anterior antes de adicionar novos dados
+        history.innerHTML = "";
+
+        // Iterar sobre a lista de vendas
+        data.forEach(sale => {
+            // Criar uma nova div para cada venda
+            const div = document.createElement('div');
+            div.className = "sale"; // Usar classe em vez de ID, já que haverá múltiplos elementos
+
+            // Nome do alimento
+            const foodName = document.createElement('div');
+            foodName.className = "foodName";
+            foodName.textContent = sale.foodName || `ID do Alimento: ${dataFood.name}`;
+            div.appendChild(foodName);
+
+            // Preço
+            const price = document.createElement('div');
+            price.className = "price";
+            price.textContent = `R$ ${parseFloat(sale.price).toFixed(2)}`;
+            div.appendChild(price);
+
+            // Data da venda
+            const saleDate = document.createElement('div');
+            saleDate.className = "saleDate";
+            saleDate.textContent = new Date(sale.saleDate).toLocaleDateString();
+            div.appendChild(saleDate);
+
+            // Descrição
+            const description = document.createElement('div');
+            description.className = "description";
+            description.textContent = sale.description || "Sem descrição disponível";
+            div.appendChild(description);
+
+            // Adicionar a venda ao histórico
+            history.appendChild(div);
+        });
+
+    } catch (error) {
+        console.error("Erro ao carregar o histórico de vendas:", error);
+        alert("Houve um problema ao carregar o histórico de compras. Tente novamente mais tarde.");
     }
-
-    // Criar uma nova div para exibir as informações da venda
-    const div = document.createElement('div');
-    div.id = "sale";
-
-    // Criar e adicionar o nome do alimento
-    const foodName = document.createElement('div');
-    foodName.id = "foodName";
-    foodName.textContent = data.idFood; // Certifique-se de que isso seja o nome correto
-    div.appendChild(foodName);
-
-    // Criar e adicionar o preço
-    const price = document.createElement('div');
-    price.id = "price";
-    price.textContent = `R$ ${data.price}`; // Formatar o preço com duas casas decimais
-    div.appendChild(price);
-
-    // Criar e adicionar a data da venda
-    const saleDate = document.createElement('div');
-    saleDate.id = "saleDate";
-    saleDate.textContent = new Date(data.saleDate).toLocaleDateString(); // Formatar a data
-    div.appendChild(saleDate);
-
-    // Criar e adicionar a descrição
-    const description = document.createElement('div');
-    description.id = "description";
-    description.textContent = data.description;
-    div.appendChild(description);
-
-    // Adicionar a div com as informações ao histórico de vendas
-    history.appendChild(div);
 
 };
 

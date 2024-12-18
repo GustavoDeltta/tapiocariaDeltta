@@ -1,6 +1,7 @@
 package com.example.tapiocariaBackend.controllers
 
 import com.example.tapiocariaBackend.dto.PaymentRequest
+import com.example.tapiocariaBackend.dto.SaleResponse
 import com.example.tapiocariaBackend.repositories.FillingsRepository
 import com.example.tapiocariaBackend.repositories.FoodsRepository
 import com.example.tapiocariaBackend.repositories.Sales
@@ -30,6 +31,7 @@ class TapiocariaController(
             ResponseEntity.ok(
                 mapOf(
                     "basePrice" to food.price,
+                    "name" to food.name,
                     "fillings" to fillings,
                 )
             )
@@ -40,15 +42,17 @@ class TapiocariaController(
         }
     }
     @GetMapping("/history")
-    fun getAllSalesByCpfClient(@RequestParam("cpf")cpf: String): List<Sales>{
+    fun getAllSalesByCpfClient(@RequestParam("cpf")cpf: String): List<SaleResponse> {
         return salesRepository.getAllSalesByCpfClient(cpf)
     }
     @PostMapping("/payment")
     fun processPayment(@RequestBody paymentRequest: PaymentRequest): ResponseEntity<String>{
         return try {
+            val food = foodsRepository.findById(paymentRequest.idFood)
+                .orElseThrow { FoodNotFoundException("Food with id ${paymentRequest.idFood} not found") }
             val sale = Sales(
                 id = null,
-                idFood = paymentRequest.idFood,
+                food = food,
                 cpf = paymentRequest.cpf,
                 saleDate = paymentRequest.saleDate,
                 description = paymentRequest.description,
