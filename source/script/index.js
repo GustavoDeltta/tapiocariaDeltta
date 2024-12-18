@@ -124,8 +124,61 @@ const modal = document.getElementById("modal");
 const openModalBtn = document.getElementById("openModalBtn");
 const closeBtn = document.querySelector(".close");
 
-openModalBtn.onclick = function () {
+openModalBtn.onclick = async function () {
+
+    const cpf = document.getElementById('cpf').value;
+    if (!cpf) {
+        alert("Por favor, preencha seu número de CPF para ver seu histórico de compra.");
+        return;
+    }
+
+    cpf.toString();
+
     modal.style.display = "block";
+
+    const response = await fetch(`${baseUrl}/history?cpf=${cpf}`);
+    const data = await response.json();
+
+    console.log(data); 
+    
+    // Garantir que o elemento history-sales exista
+    const history = document.getElementById("history-sales");
+    if (!history) {
+        alert("Erro: O elemento 'history-sales' não foi encontrado.");
+        return;
+    }
+
+    // Criar uma nova div para exibir as informações da venda
+    const div = document.createElement('div');
+    div.id = "sale";
+
+    // Criar e adicionar o nome do alimento
+    const foodName = document.createElement('div');
+    foodName.id = "foodName";
+    foodName.textContent = data.idFood; // Certifique-se de que isso seja o nome correto
+    div.appendChild(foodName);
+
+    // Criar e adicionar o preço
+    const price = document.createElement('div');
+    price.id = "price";
+    price.textContent = `R$ ${data.price}`; // Formatar o preço com duas casas decimais
+    div.appendChild(price);
+
+    // Criar e adicionar a data da venda
+    const saleDate = document.createElement('div');
+    saleDate.id = "saleDate";
+    saleDate.textContent = new Date(data.saleDate).toLocaleDateString(); // Formatar a data
+    div.appendChild(saleDate);
+
+    // Criar e adicionar a descrição
+    const description = document.createElement('div');
+    description.id = "description";
+    description.textContent = data.description;
+    div.appendChild(description);
+
+    // Adicionar a div com as informações ao histórico de vendas
+    history.appendChild(div);
+
 };
 
 closeBtn.onclick = function () {
