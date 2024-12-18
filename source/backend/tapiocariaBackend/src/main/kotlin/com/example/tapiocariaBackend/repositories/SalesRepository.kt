@@ -1,8 +1,6 @@
 package com.example.tapiocariaBackend.repositories
 
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
@@ -10,6 +8,8 @@ import org.springframework.data.repository.query.Param
 @Entity
 @Table(name = "sales")
 data class Sales(
+
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id val id: Int?,
     val idFood: Int,
     val cpf: String,

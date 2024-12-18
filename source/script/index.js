@@ -2,9 +2,11 @@ const baseUrl = 'http://localhost:8080';
 let basePrice = 0;
 let cartItems = [];
 
-document.getElementById('tapioca-tab').addEventListener('click', () => fetchFillings(1), updateTotalPrice(1));
-document.getElementById('cuscuz-tab').addEventListener('click', () => fetchFillings(2), updateTotalPrice(2));
-document.getElementById('cuscuz-tab').addEventListener('click', () => fetchFillings(3), updateTotalPrice(3));
+document.getElementById('tapioca-tab').addEventListener('click', () => fetchFillings(1));
+document.getElementById('cuscuz-tab').addEventListener('click', () => fetchFillings(2));
+document.getElementById('sanduiche-tab').addEventListener('click', () => fetchFillings(3));
+
+var foodID = 0;
 
 async function fetchFillings(foodId) {
     try {
@@ -13,7 +15,11 @@ async function fetchFillings(foodId) {
         const data = await response.json();
 
         basePrice = data.basePrice;
-        console.log("NCVDJNCJDNCJDN", data) 
+        foodID = foodId;
+
+        cartItems = [];
+        document.querySelector(".checkout-itens").innerHTML = "";
+        document.getElementById("total-price").innerText = "R$ 0.00";
 
         const fillingsGrid = document.querySelector('.recheios-grid');
         fillingsGrid.innerHTML = ''; 
@@ -30,7 +36,9 @@ async function fetchFillings(foodId) {
         alert(`Erro ao carregar recheios: ${error.message}`);
     }
 }
+
 var fillingPrice;
+
 function addToCart(filling) {
 
     if (!cartItems.some(item => item.name === filling.name)) {
@@ -38,6 +46,7 @@ function addToCart(filling) {
 
         const checkoutDiv = document.querySelector('.checkout-itens');
         const div = document.createElement('div');
+        div.id = "checkout-item";
         div.dataset.name = filling.name;
         div.dataset.price = filling.price;
         div.textContent = `${filling.name} - R$ ${filling.price}`;
@@ -45,30 +54,37 @@ function addToCart(filling) {
 
         fillingPrice = filling.price
 
-        updateTotalPrice();
+        calcularTotal();
     }
 }
 
-function updateTotalPrice() {
+var saleFillings = [];
+var saleDescription = "";
+var totalPrice = 0;
 
-    var totalPrice = basePrice;
+function calcularTotal() {
 
-    const item = document.querySelectorAll('.checkout-itens');
-    item.forEach(div => {
-        console.log(div.children)
-        totalPrice += parseFloat(fillingPrice);
+    const items = document.querySelectorAll('#checkout-item');
+    totalPrice = basePrice;
+
+    items.forEach(item => {
+        const price = parseFloat(item.dataset.price);
+        const filling = item.dataset.name;
+
+        if(!saleFillings.includes(" " + filling)){
+            saleFillings.push(" " + filling)
+        };
+
+        if (!isNaN(price)) {
+            totalPrice += price;
+        }
     });
 
-    console.log(item);
-
-    // for(i of item){
-    //     totalPrice += parseFloat(fillingPrice);
-    // }
-
-    console.log('Total Price:', totalPrice);
+    saleDescription = saleFillings.toString();
+    console.log(saleDescription);
 
     const totalPriceElement = document.getElementById('total-price');
-    totalPriceElement.textContent = totalPrice;
+    totalPriceElement.textContent = "R$ " + totalPrice.toFixed(2);
 }
 
 document.getElementById("clear-btn").addEventListener("click", () => {
@@ -84,12 +100,20 @@ document.getElementById("payment-btn").addEventListener("click", () => {
         return;
     }
 
-    const description = "Comida com recheios";
-    const price = basePrice + cartItems.reduce((sum, filling) => sum + filling.price, 0);
+    const currentDate = new Date().toISOString();
 
     fetch(`${baseUrl}/payment`, {
         method: 'POST',
-        body: `cpf=${cpf}&description=${encodeURIComponent(description)}&price=${price}`
+        headers: {
+            'Content-Type': 'application/json' 
+        },
+        body: JSON.stringify({ 
+            idFood: foodID, 
+            cpf: cpf,
+            saleDate: currentDate, 
+            description: saleDescription,
+            price: totalPrice
+        })
     })
         .then(response => response.text())
         .then(data => alert(data))
