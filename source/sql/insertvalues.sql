@@ -1,0 +1,20 @@
+insert into foods values(1, 'tapioca', 3.50);
+insert into foods values(2, 'cuscuz', 4.50);
+insert into foods values(3, 'sanduiche', 4.50);
+
+insert into fillings values(1, 1, 'queijo', 0.80);
+insert into fillings values(2, 1, 'presunto', 0.60);
+insert into fillings values(3, 1, 'carne', 1.50);
+insert into fillings values(4, 1, 'frango', 1.00);
+insert into fillings values(1, 2, 'queijo', 0.80);
+insert into fillings values(3, 2, 'carne', 1.50);
+insert into fillings values(1, 3, 'queijo', 0.80);
+insert into fillings values(5, 1, 'tomate', 0.50);
+insert into fillings values(5, 2, 'tomate', 0.50);
+insert into fillings values(5, 3, 'tomate', 0.50);
+insert into fillings values(6, 1, 'ovos', 1.00);
+insert into fillings values(6, 2, 'ovos', 1.00);
+insert into fillings values(6, 3, 'ovos', 1.00);
+insert into fillings values(7, 1, 'bacon', 1.30);
+insert into fillings values(7, 2, 'bacon', 1.30);
+insert into fillings values(7, 3, 'bacon', 1.30);
